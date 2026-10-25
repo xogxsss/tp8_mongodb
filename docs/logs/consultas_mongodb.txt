@@ -1,0 +1,105 @@
+◇ injected env (2) from .env
+
+a) Identificador y forma de pago de todos los pedidos
+[
+  { _id: 1, forma_pago: 'TARJETA' },
+  { _id: 10, forma_pago: 'TARJETA' },
+  { _id: 100, forma_pago: 'TRANSFERENCIA' },
+  { _id: 1000, forma_pago: 'TRANSFERENCIA' },
+  { _id: 10000, forma_pago: 'TRANSFERENCIA' },
+  { _id: 100000, forma_pago: 'EFECTIVO' },
+  { _id: 100001, forma_pago: 'TARJETA' },
+  { _id: 100002, forma_pago: 'EFECTIVO' },
+  { _id: 100003, forma_pago: 'EFECTIVO' },
+  { _id: 100004, forma_pago: 'EFECTIVO' }
+]
+
+b) Pedidos filtrados por forma de pago existente en los datos
+Forma de pago elegida: EFECTIVO
+[
+  { _id: 100000, forma_pago: 'EFECTIVO' },
+  { _id: 100002, forma_pago: 'EFECTIVO' },
+  { _id: 100003, forma_pago: 'EFECTIVO' },
+  { _id: 100004, forma_pago: 'EFECTIVO' }
+]
+
+c) Pedidos que contienen un producto migrado
+Producto elegido (_id): 10
+[
+  {
+    _id: 10,
+    detalles: [
+      {
+        id_producto: 10,
+        cantidad: 5,
+        precio_unitario_historico: Decimal128 {
+          bytes: Buffer(16) [Uint8Array] [
+            15, 84,  2,  0, 0, 0,
+             0,  0,  0,  0, 0, 0,
+             0,  0, 60, 48
+          ]
+        }
+      }
+    ]
+  }
+]
+
+d) Pedidos cuyo total supera el promedio de la muestra
+Umbral elegido: 6204.688 (promedio de los totales migrados).
+[
+  {
+    _id: 10000,
+    forma_pago: 'TRANSFERENCIA',
+    total: Decimal128 {
+      bytes: Buffer(16) [Uint8Array] [
+        24, 139, 27,  0, 0, 0,
+         0,   0,  0,  0, 0, 0,
+         0,   0, 60, 48
+      ]
+    }
+  },
+  {
+    _id: 100,
+    forma_pago: 'TRANSFERENCIA',
+    total: Decimal128 {
+      bytes: Buffer(16) [Uint8Array] [
+        76, 46, 18,  0, 0, 0,
+         0,  0,  0,  0, 0, 0,
+         0,  0, 60, 48
+      ]
+    }
+  },
+  {
+    _id: 1000,
+    forma_pago: 'TRANSFERENCIA',
+    total: Decimal128 {
+      bytes: Buffer(16) [Uint8Array] [
+        67, 5, 18,  0, 0, 0,
+         0, 0,  0,  0, 0, 0,
+         0, 0, 60, 48
+      ]
+    }
+  },
+  {
+    _id: 1,
+    forma_pago: 'TARJETA',
+    total: Decimal128 {
+      bytes: Buffer(16) [Uint8Array] [
+        20, 220, 12,  0, 0, 0,
+         0,   0,  0,  0, 0, 0,
+         0,   0, 60, 48
+      ]
+    }
+  },
+  {
+    _id: 10,
+    forma_pago: 'TARJETA',
+    total: Decimal128 {
+      bytes: Buffer(16) [Uint8Array] [
+        75, 164, 11,  0, 0, 0,
+         0,   0,  0,  0, 0, 0,
+         0,   0, 60, 48
+      ]
+    }
+  }
+]
