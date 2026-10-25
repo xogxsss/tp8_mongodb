@@ -1,0 +1,50 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+        "_id",
+        "nombre",
+        "precio_lista",
+        "stock",
+        "activo",
+        "id_categoria"
+        ],
+        "properties": {
+        "_id": {
+            "bsonType": [
+            "int",
+            "long"
+            ]
+        },
+        "nombre": {
+            "bsonType": "string",
+            "maxLength": 100
+        },
+        "descripcion": {
+            "bsonType": [
+            "string",
+            "null"
+            ]
+        },
+        "precio_lista": {
+            "bsonType": "decimal",
+            "minimum": 0,
+            "maximum": 99999999.99,
+            "multipleOf": 0.01
+        },
+        "stock": {
+            "bsonType": "int",
+            "minimum": 0
+        },
+        "activo": {
+            "bsonType": "bool"
+        },
+        "id_categoria": {
+            "bsonType": [
+            "int",
+            "long"
+            ]
+        }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+        "_id",
+        "nombre",
+        "email",
+        "direccion"
+        ],
+        "properties": {
+        "_id": {
+            "bsonType": [
+            "int",
+            "long"
+            ]
+        },
+        "nombre": {
+            "bsonType": "string",
+            "maxLength": 100
+        },
+        "email": {
+            "bsonType": "string",
+            "maxLength": 255
+        },
+        "telefono": {
+            "bsonType": [
+            "string",
+            "null"
+            ],
+            "maxLength": 20
+        },
+        "direccion": {
+            "bsonType": "string",
+            "maxLength": 200
+        }
+        }
+    }
+}

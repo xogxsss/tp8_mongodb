@@ -1,0 +1,40 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["_id", "fecha_hora", "forma_pago", "id_cliente", "detalles"],
+        "properties": {
+        "_id": {
+            "bsonType": ["int", "long"]
+        },
+        "fecha_hora": {
+            "bsonType": "date"
+        },
+        "forma_pago": {
+            "bsonType": "string"
+        },
+        "id_cliente": {
+            "bsonType": ["int", "long"]
+        },
+        "detalles": {
+            "bsonType": "array",
+            "items": {
+            "bsonType": "object",
+            "required": ["id_producto", "cantidad", "precio_unitario_historico"],
+            "properties": {
+                "id_producto": {
+                "bsonType": ["int", "long"]
+                },
+                "cantidad": {
+                "bsonType": "int",
+                "minimum": 1
+                },
+                "precio_unitario_historico": {
+                "bsonType": "decimal",
+                "minimum": 0
+                }
+            }
+            }
+        }
+        }
+    }
+}
