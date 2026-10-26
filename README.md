@@ -1,93 +1,86 @@
-# Trabajo Práctico N.º 8: NoSQL y Mongoose - Food Store
+# FoodStore: PostgreSQL a MongoDB
 
-**Asignatura:** Bases de Datos II  
-**Carrera:** Tecnicatura Universitaria en Programación (UTN FRM)  
-**Proyecto:** Food Store  
+Trabajo Práctico N.º 8 de Bases de Datos II. Migra clientes, productos y pedidos; los detalles se embeben en cada pedido.
 
-<br>
-
-### Descripción del Proyecto
-
-Este proyecto implementa el modelado documental y la migración de un subconjunto de datos (pedidos, sus líneas de detalle y clientes) desde PostgreSQL (Food Store) hacia MongoDB utilizando Mongoose como ODM.
-
-<br>
-
-### Estructura del Repositorio
+## Estructura
 
 ```text
-Guzmán_Agustina_TP8/
-├── config/
-│   └── db.js                   # Conexión a MongoDB con Mongoose
-├── models/
-│   └── Pedido.js               # Esquema de Pedido (Cliente y Detalles embebidos)
+TP8/
 ├── data/
-│   └── seed.js                 # Script de migración y carga inicial
-├── .env                        # Variables de entorno (MONGO_URI)
-├── .env.example                # Plantilla de variables de entorno
-├── .gitignore                  # Exclusión de node_modules y .env
-├── package.json                # Dependencias del proyecto
-├── package-lock.json
-├── consultas_mongodb.js        # Consultas solicitadas para MongoDB
-├── consultas_postgresql.sql    # Sentencias SQL equivalentes
-└── README.md                   # Documentación del proyecto
-
+│   └── datos_migrados.json
+├── docs/
+│   └── modelo.md
+├── mongo/
+│   ├── consultas_mongodb.js
+│   └── migracion.js
+├── postgresql/
+│   └── consultas_postgresql.sql
+└── schema/
+    ├── cliente_schema.json
+    ├── pedido_schema.json
+    └── producto_schema.json
 ```
 
-<br>
+## Preparación
 
-### Requisitos e Instalación
+Se requiere acceso a PostgreSQL y MongoDB. En Windows, si vas a usar MongoDB local y aún no está instalado, podés instalar MongoDB Community Server:
 
-1. Requisitos: Node.js (v18+), MongoDB Server local o Atlas, y VS Code con la extensión MongoDB for VS Code.
-2. Clonar el repositorio e instalar dependencias:
+```powershell
+winget install --id MongoDB.Server --exact
+```
+
+Comprobá que el servicio esté iniciado:
+
+```powershell
+Get-Service MongoDB
+```
+
+Si está detenido, abrí PowerShell como administrador e iniciá el servicio:
+
+```powershell
+Start-Service MongoDB
+```
+
+Configurá las conexiones en `.env` tomando como referencia `.env.example`. La URI de ejemplo usa la base `foodstore_nosql`. La migración crea las colecciones `clientes`, `productos` y `pedidos`; las líneas de detalle quedan embebidas en cada pedido. No compartas ni subas `.env`.
+
+## Migración
+
+Desde la carpeta del proyecto, ejecutá:
+
 ```bash
 npm install
-
+npm run migrate
 ```
 
+El proceso migra como máximo los primeros 10 clientes y productos por ID y hasta 10 pedidos de esos clientes que tengan líneas asociadas a los productos de la muestra. Incluye sus líneas coincidentes y verifica que migre al menos cinco pedidos con detalles. Cada pedido conserva `id_cliente`; los datos del cliente están en `clientes`. PostgreSQL no tiene un campo `estado`; para esta entrega se agrega en MongoDB con el estado inicial `entregado`. El modelo y sus decisiones están documentados en `docs/modelo.md`.
 
-3. Crear el archivo `.env` basado en `.env.example`:
-```env
-MONGO_URI=mongodb://127.0.0.1:27017/foodstore_nosql
+Para MongoDB local, verificá que el puerto esté disponible antes de migrar:
 
+```powershell
+Test-NetConnection 127.0.0.1 -Port 27017
 ```
 
+Para guardar en `logs/estructura_postgresql.txt` la descripción de las tablas de origen:
 
+```powershell
+$env:PGCLIENTENCODING = "WIN1252"
+psql -h localhost -U admin_datos -d foodstore_dev -o logs\estructura_postgresql.tmp -c "\d cliente" -c "\d producto" -c "\d pedido" -c "\d detalle_pedido"
+if ($LASTEXITCODE -eq 0) {
+    $texto = [System.IO.File]::ReadAllText("logs\estructura_postgresql.tmp", [System.Text.Encoding]::GetEncoding(1252))
+    [System.IO.File]::WriteAllText("logs\estructura_postgresql.txt", $texto, [System.Text.UTF8Encoding]::new($false))
+    Remove-Item logs\estructura_postgresql.tmp
+}
+Remove-Item Env:PGCLIENTENCODING
+```
 
-<br>
+## Consultas
 
-### Guía de Ejecución
-
-1. Migración / carga inicial de datos (seed):
-
+Con MongoDB iniciado y la conexión configurada, ejecutá las cuatro consultas:
 
 ```bash
-node data/seed.js
-
+npm run queries:mongo
 ```
 
+Este comando se conecta con la configuración de `.env`; no requiere `mongosh`. Para usar la consola interactiva, instalá MongoDB Shell por separado y conectate con `mongosh "mongodb://127.0.0.1:27017/foodstore_nosql"`. El total del pedido se calcula sumando cantidad por precio histórico de cada detalle y se compara con el promedio de la muestra migrada.
 
-2. Ejecución de consultas en MongoDB (consigna 4):
-
-
-```bash
-node consultas_mongodb.js
-
-```
-
-
-3. Verificación en PostgreSQL (consigna 5):
-Ejecutar `consultas_postgresql.sql` en PostgreSQL para comparar registros e identificadores con los de MongoDB.
-
-
-
-<br>
-
-### Archivos de Entrega
-
-* `consultas_mongodb.js`: Consultas con sintaxis Mongoose.
-
-
-* `consultas_postgresql.sql`: Consultas SQL equivalentes.
-
-
-* Informe en PDF: documento con la descripción del modelo, evidencias, tabla comparativa, análisis de IA y conclusión técnica.
+Las consultas para PostgreSQL están en `postgresql/consultas_postgresql.sql`.
