@@ -35,7 +35,7 @@ async function migrate() {
         host: process.env.PGHOST || 'localhost',
         port: Number(process.env.PGPORT || 5432),
         database: process.env.PGDATABASE || 'foodstore_dev',
-        user: process.env.PGUSER || 'postgres',
+        user: process.env.PGUSER || 'admin_datos',
         password: process.env.PGPASSWORD
     });
 
