@@ -1,0 +1,22 @@
+Consulta b: pedidos migrados (PostgreSQL no tiene campo estado)
+ id_pedido 
+-----------
+         1
+         9
+        10
+        99
+       100
+       999
+      1000
+      9999
+     10000
+    100001
+(10 filas)
+
+Consulta c: pedidos migrados que contienen el producto 10
+ id_pedido 
+-----------
+         9
+        10
+(2 filas)
+
