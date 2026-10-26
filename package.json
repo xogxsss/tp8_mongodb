@@ -1,13 +1,16 @@
 {
   "dependencies": {
     "dotenv": "^18.0.9",
-    "mongoose": "^9.11.4"
+    "mongoose": "^9.11.4",
+    "pg": "^8.23.1"
   },
   "name": "guzman-agustina-tp8",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrate": "node mongo/migracion.js",
+    "queries:mongo": "node mongo/consultas_mongodb.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

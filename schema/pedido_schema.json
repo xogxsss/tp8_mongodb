@@ -1,13 +1,17 @@
 {
     "$jsonSchema": {
         "bsonType": "object",
-        "required": ["_id", "fecha_hora", "forma_pago", "id_cliente", "detalles"],
+        "required": ["_id", "fecha_hora", "estado", "forma_pago", "id_cliente", "detalles"],
         "properties": {
         "_id": {
             "bsonType": ["int", "long"]
         },
         "fecha_hora": {
             "bsonType": "date"
+        },
+        "estado": {
+            "bsonType": "string",
+            "enum": ["pendiente", "confirmado", "enviado", "entregado", "cancelado"]
         },
         "forma_pago": {
             "bsonType": "string"
